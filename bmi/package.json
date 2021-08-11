@@ -1,0 +1,23 @@
+{
+  "name": "bmi",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "calculateBmi": "ts-node bmiCalculator.ts"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Angelxv01/Full-Stack-Open-TypeScript.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Angelxv01/Full-Stack-Open-TypeScript/issues"
+  },
+  "homepage": "https://github.com/Angelxv01/Full-Stack-Open-TypeScript#readme",
+  "devDependencies": {
+    "@types/node": "^16.4.14"
+  }
+}
