@@ -3,7 +3,7 @@ interface Result {
   trainingDays: number;
   success: boolean;
   rating: number;
-  ratingDescription: String;
+  ratingDescription: string;
   target: number;
   average: number;
 }
@@ -17,7 +17,7 @@ const calculateExercises = (exercise: number[], target: number): Result => {
   const average = exercise.reduce((acc, obj) => (acc += obj), 0) / periodLength;
   const ratingArg = average / target;
 
-  let rating: number = 0;
+  let rating = 0;
   if (ratingArg > 1) rating = 3;
   if (ratingArg < 1) rating = 2;
   if (ratingArg < 0.5) rating = 1;
@@ -48,7 +48,7 @@ const calculateExercises = (exercise: number[], target: number): Result => {
 };
 
 const processInput = () => {
-  let [inTarget, ...inExercise] = process.argv.slice(2);
+  const [inTarget, ...inExercise] = process.argv.slice(2);
   const target = Number(inTarget);
   const exercise = inExercise.map((obj) => Number(obj));
   if (isNaN(target) || exercise.some((obj) => isNaN(obj))) {

@@ -7,7 +7,8 @@
     "ts-node": "ts-node",
     "calculateBmi": "ts-node bmiCalculator.ts",
     "calculateExercises": "ts-node exerciseCalculator.ts",
-    "dev": "ts-node-dev index.ts"
+    "dev": "ts-node-dev index.ts",
+    "lint": "eslint --ext .ts ."
   },
   "repository": {
     "type": "git",
@@ -33,5 +34,5 @@
   "dependencies": {
     "express": "^4.17.1"
   },
-  "type": "module"
+  "type": "commonjs"
 }

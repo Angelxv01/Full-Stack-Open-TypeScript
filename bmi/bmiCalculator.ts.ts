@@ -1,4 +1,4 @@
-export const calculateBmi = (height: number, weight: number): String => {
+export const calculateBmi = (height: number, weight: number): string => {
   const bmi = weight / (height / 100) ** 2;
 
   if (bmi < 16) return 'Underweight (Severe thinness)';
@@ -11,7 +11,7 @@ export const calculateBmi = (height: number, weight: number): String => {
   return 'Obese (Class III)';
 };
 
-let [inHeight, inWeight] = process.argv.slice(2, 4);
+const [inHeight, inWeight] = process.argv.slice(2, 4);
 const height = Number(inHeight),
   weight = Number(inWeight);
 if (!(isNaN(height) || isNaN(weight))) {
