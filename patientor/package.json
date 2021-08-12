@@ -6,7 +6,9 @@
   "scripts": {
     "tsc": "tsc",
     "dev": "ts-node-dev index.ts",
-    "lint": "eslint --ext .ts ."
+    "lint": "eslint --ext .ts .",
+    "start": "node build/index.js",
+    "start:tsc": "tsc && npm run start"
   },
   "keywords": [],
   "author": "",
@@ -19,6 +21,7 @@
     "@typescript-eslint/eslint-plugin": "^4.29.1",
     "@typescript-eslint/parser": "^4.29.1",
     "eslint": "^7.32.0",
-    "ts-node-dev": "^1.1.8"
+    "ts-node-dev": "^1.1.8",
+    "typescript": "^4.3.5"
   }
 }
