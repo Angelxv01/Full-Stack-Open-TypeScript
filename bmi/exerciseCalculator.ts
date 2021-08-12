@@ -17,7 +17,7 @@ const calculateExercises = (exercise: number[], target: number): Result => {
   const average = exercise.reduce((acc, obj) => (acc += obj), 0) / periodLength;
   const ratingArg = average / target;
 
-  let rating: number;
+  let rating: number = 0;
   if (ratingArg > 1) rating = 3;
   if (ratingArg < 1) rating = 2;
   if (ratingArg < 0.5) rating = 1;
