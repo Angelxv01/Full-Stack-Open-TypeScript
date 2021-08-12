@@ -1,4 +1,4 @@
-interface Result {
+export interface Result {
   periodLength: number;
   trainingDays: number;
   success: boolean;
@@ -8,7 +8,10 @@ interface Result {
   average: number;
 }
 
-const calculateExercises = (exercise: number[], target: number): Result => {
+export const calculateExercises = (
+  exercise: number[],
+  target: number
+): Result => {
   const periodLength = exercise.length;
   const trainingDays = exercise.reduce((acc, obj) => {
     obj > 0 && acc++;
@@ -47,15 +50,11 @@ const calculateExercises = (exercise: number[], target: number): Result => {
   };
 };
 
-const processInput = () => {
+export const cmdCalculateExercises = () => {
   const [inTarget, ...inExercise] = process.argv.slice(2);
   const target = Number(inTarget);
   const exercise = inExercise.map((obj) => Number(obj));
-  if (isNaN(target) || exercise.some((obj) => isNaN(obj))) {
-    console.log('Your input is bugged');
-    return;
+  if (!(isNaN(target) && exercise.some((obj) => isNaN(obj)))) {
+    console.log(calculateExercises(exercise, target));
   }
-  console.log(calculateExercises(exercise, target));
 };
-
-processInput();
