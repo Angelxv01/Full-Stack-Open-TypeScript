@@ -6,24 +6,34 @@ interface CoursePartBase {
   type: string;
 }
 
-interface CourseWithDescription extends CoursePartBase {
+interface CourseDescriptionPart extends CoursePartBase {
   description: string;
 }
 
-interface CourseNormalPart extends CourseWithDescription {
+interface CourseNormalPart extends CourseDescriptionPart {
   type: 'normal';
 }
+
 interface CourseProjectPart extends CoursePartBase {
   type: 'groupProject';
   groupProjectCount: number;
 }
 
-interface CourseSubmissionPart extends CourseWithDescription {
+interface CourseSubmissionPart extends CourseDescriptionPart {
   type: 'submission';
   exerciseSubmissionLink: string;
 }
 
-type CoursePart = CourseNormalPart | CourseProjectPart | CourseSubmissionPart;
+interface CourseRequirementPart extends CourseDescriptionPart {
+  type: 'special';
+  requirements: string[];
+}
+
+type CoursePart =
+  | CourseNormalPart
+  | CourseProjectPart
+  | CourseSubmissionPart
+  | CourseRequirementPart;
 
 interface HeaderProps {
   courseName: string;
@@ -83,6 +93,16 @@ const Part = (props: CoursePart): JSX.Element => {
           </p>
         </div>
       );
+    case 'special':
+      return (
+        <div>
+          <h3>
+            {props.name} {props.exerciseCount}
+          </h3>
+          <i>{props.description}</i>
+          <p>required skills: {props.requirements.join(', ')}</p>
+        </div>
+      );
     default:
       return assertNever(props);
   }
@@ -125,6 +145,13 @@ const App = () => {
       description: 'Confusing description',
       exerciseSubmissionLink: 'https://fake-exercise-submit.made-up-url.dev',
       type: 'submission'
+    },
+    {
+      name: 'Backend development',
+      exerciseCount: 21,
+      description: 'Typing the backend',
+      requirements: ['nodejs', 'jest'],
+      type: 'special'
     }
   ];
 
