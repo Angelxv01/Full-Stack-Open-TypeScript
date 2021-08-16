@@ -11,17 +11,24 @@ const getAll = (): PatientInfo[] => {
     name,
     dateOfBirth,
     gender,
-    occupation
+    occupation,
+    entries: []
   }));
 };
 
 const addPatient = (patientData: NewPatient): Patient => {
-  const newPatient: Patient = { ...patientData, id: uuid() };
+  const newPatient: Patient = { ...patientData, id: uuid(), entries: [] };
   patient.push(newPatient);
   return newPatient;
 };
 
+const findPatient = (id: string): PatientInfo | undefined => {
+  const res = patient.find((obj) => obj.id === id);
+  return res ? { ...res, entries: [] } : undefined;
+};
+
 export default {
   getAll,
-  addPatient
+  addPatient,
+  findPatient
 };
