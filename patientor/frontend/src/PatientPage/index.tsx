@@ -1,7 +1,7 @@
 import React from "react";
 import axios from "axios";
 import { useParams } from "react-router-dom";
-import { Header, Icon, Container } from "semantic-ui-react";
+import { Header, Icon, Container, List } from "semantic-ui-react";
 import { Gender, Patient } from "../types";
 
 import { patientInfo, useStateValue } from "../state";
@@ -49,6 +49,17 @@ const index = () => {
       </Header>
       <Container>ssn: {patient?.ssn}</Container>
       <Container>occupation: {patient?.occupation}</Container>
+      <Header as="h3">entries</Header>
+      {patient?.entries.map((obj) => (
+        <Container key={obj.id}>
+          {obj.date} {obj.description}
+          <List bulleted>
+            {obj.diagnosisCodes?.map((obj) => (
+              <List.Item key={obj}>{obj}</List.Item>
+            ))}
+          </List>
+        </Container>
+      ))}
     </div>
   );
 };
