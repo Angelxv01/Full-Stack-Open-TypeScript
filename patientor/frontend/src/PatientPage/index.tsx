@@ -1,15 +1,16 @@
 import React from "react";
 import axios from "axios";
 import { useParams } from "react-router-dom";
-import { Header, Icon, Container, List } from "semantic-ui-react";
+import { Header, Icon, Container } from "semantic-ui-react";
 import { Gender, Patient } from "../types";
 
 import { patientInfo, useStateValue } from "../state";
+import Entry from "./Entry";
 
 const index = () => {
   const { id } = useParams<{ id: string }>();
   const [patient, setPatient] = React.useState<Patient | undefined>(undefined);
-  const [{ patients, diagnosis }, dispatch] = useStateValue();
+  const [{ patients }, dispatch] = useStateValue();
 
   React.useEffect(() => {
     const fetchPatient = async () => {
@@ -50,20 +51,13 @@ const index = () => {
       <Container>ssn: {patient?.ssn}</Container>
       <Container>occupation: {patient?.occupation}</Container>
       <Header as="h3">entries</Header>
-      {patient?.entries.map((obj) => (
-        <Container key={obj.id}>
-          {obj.date} {obj.description}
-          <List bulleted>
-            {obj.diagnosisCodes?.map((obj) => (
-              <List.Item key={obj}>
-                {obj} {diagnosis.find((d) => d.code === obj)?.name}
-              </List.Item>
-            ))}
-          </List>
-        </Container>
+      {patient?.entries.map((entry) => (
+        <Entry entry={entry} key={entry.id} />
       ))}
     </div>
   );
 };
+
+// doctor stethoscope heart
 
 export default index;
