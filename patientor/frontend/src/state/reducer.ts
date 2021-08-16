@@ -9,6 +9,10 @@ export type Action =
   | {
       type: "ADD_PATIENT";
       payload: Patient;
+    }
+  | {
+      type: "PATIENT_INFO";
+      payload: Patient;
     };
 
 export const reducer = (state: State, action: Action): State => {
@@ -25,6 +29,17 @@ export const reducer = (state: State, action: Action): State => {
         }
       };
     case "ADD_PATIENT":
+      return {
+        ...state,
+        patients: {
+          ...state.patients,
+          [action.payload.id]: action.payload
+        }
+      };
+    // essentially this add a patient but since it exist already,
+    // it should replace the old one adding ssn,
+    // for semantic reason I separate this reducer
+    case "PATIENT_INFO":
       return {
         ...state,
         patients: {
