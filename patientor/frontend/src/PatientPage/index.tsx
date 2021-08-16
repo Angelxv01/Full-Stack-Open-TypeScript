@@ -4,7 +4,7 @@ import { useParams } from "react-router-dom";
 import { Header, Icon, Container } from "semantic-ui-react";
 import { Gender, Patient } from "../types";
 
-import { useStateValue } from "../state";
+import { patientInfo, useStateValue } from "../state";
 
 const index = () => {
   const { id } = useParams<{ id: string }>();
@@ -22,7 +22,7 @@ const index = () => {
         const { data: patientFromApi } = await axios.get<Patient>(
           `http://localhost:3001/api/patients/${id}`
         );
-        dispatch({ type: "PATIENT_INFO", payload: patientFromApi });
+        dispatch(patientInfo(patientFromApi));
         return setPatient(patientFromApi);
       } catch (e) {
         console.error(e);
