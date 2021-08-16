@@ -1,16 +1,16 @@
-import { Gender, NewPatient } from './types';
+import { Gender, NewPatient } from "./types";
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const parseString = (object: any): string => {
   if (!object || !isString(object)) {
-    throw new Error('Invalid type');
+    throw new Error("Invalid type");
   }
   return object;
 };
 
 export const parseDate = (object: unknown): string => {
   if (!object || !isString(object) || !isDate(object)) {
-    throw new Error('Incorrect or missing date: ' + object);
+    throw new Error("Incorrect or missing date: " + object);
   }
 
   return object;
@@ -18,14 +18,14 @@ export const parseDate = (object: unknown): string => {
 
 export const parseGender = (object: unknown): Gender => {
   if (!object || !isGender(object)) {
-    throw new Error('Incorrect or missing gender: ' + object);
+    throw new Error("Incorrect or missing gender: " + object);
   }
 
   return object;
 };
 
 const isString = (object: unknown): object is string => {
-  return typeof object === 'string' || object instanceof String;
+  return typeof object === "string" || object instanceof String;
 };
 
 const isDate = (object: string): boolean => {

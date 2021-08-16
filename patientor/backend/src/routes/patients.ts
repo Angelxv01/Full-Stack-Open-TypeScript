@@ -1,11 +1,11 @@
-import express from 'express';
-import patientService from '../services/patientService';
-import { sanitizePatient } from '../utils';
+import express from "express";
+import patientService from "../services/patientService";
+import { sanitizePatient } from "../utils";
 
 const router = express.Router();
 
-router.get('/', (_req, res) => res.json(patientService.getAll()));
-router.post('/', (req, res) => {
+router.get("/", (_req, res) => res.json(patientService.getAll()));
+router.post("/", (req, res) => {
   /* eslint-disable @typescript-eslint/no-unsafe-assignment */
   try {
     const sanitizedPatient = sanitizePatient(req.body);
@@ -16,7 +16,7 @@ router.post('/', (req, res) => {
   }
 });
 
-router.get('/:id', (req, res) => {
+router.get("/:id", (req, res) => {
   const id = req.params.id;
   const patient = patientService.findPatient(id);
   return patient ? res.send(patient) : res.sendStatus(404);
