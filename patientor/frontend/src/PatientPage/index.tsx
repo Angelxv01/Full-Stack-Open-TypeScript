@@ -9,7 +9,7 @@ import { patientInfo, useStateValue } from "../state";
 const index = () => {
   const { id } = useParams<{ id: string }>();
   const [patient, setPatient] = React.useState<Patient | undefined>(undefined);
-  const [{ patients }, dispatch] = useStateValue();
+  const [{ patients, diagnosis }, dispatch] = useStateValue();
 
   React.useEffect(() => {
     const fetchPatient = async () => {
@@ -55,7 +55,9 @@ const index = () => {
           {obj.date} {obj.description}
           <List bulleted>
             {obj.diagnosisCodes?.map((obj) => (
-              <List.Item key={obj}>{obj}</List.Item>
+              <List.Item key={obj}>
+                {obj} {diagnosis.find((d) => d.code === obj)?.name}
+              </List.Item>
             ))}
           </List>
         </Container>
