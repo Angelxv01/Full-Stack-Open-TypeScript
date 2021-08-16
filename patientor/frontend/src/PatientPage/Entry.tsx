@@ -3,7 +3,6 @@ import { useStateValue } from "../state";
 import {
   Container,
   Header,
-  Comment,
   List,
   Icon,
   SemanticCOLORS
@@ -53,7 +52,7 @@ const EntryInfo = ({ entry }: { entry: Entry }) => {
           <Icon name={iconName} />
         </Container>
       </Header>
-      <Comment as="i">{entry.description}</Comment>
+      <Container as="i">{entry.description}</Container>
       <List bulleted>
         {entry.diagnosisCodes?.map((code) => (
           <List.Item key={code}>
