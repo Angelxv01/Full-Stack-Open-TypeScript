@@ -1,6 +1,6 @@
 import express from "express";
 import patientService from "../services/patientService";
-import { sanitizePatient } from "../utils";
+import { sanitizeEntry, sanitizePatient } from "../utils";
 
 const router = express.Router();
 
@@ -20,6 +20,20 @@ router.get("/:id", (req, res) => {
   const id = req.params.id;
   const patient = patientService.findPatient(id);
   return patient ? res.send(patient) : res.sendStatus(404);
+});
+
+router.post("/:id/entries", (req, res) => {
+  const id = req.params.id;
+  const body = req.body;
+
+  try {
+    const newEntry = sanitizeEntry(body);
+    const result = patientService.addEntry(id, newEntry);
+    res.json(result);
+  } catch (err) {
+    console.log(err);
+    res.sendStatus(400);
+  }
 });
 
 export default router;
