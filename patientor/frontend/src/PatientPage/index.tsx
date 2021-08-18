@@ -8,13 +8,14 @@ import { patientInfo, useStateValue } from "../state";
 // addEntry,
 import { apiBaseUrl } from "../constants";
 import EntryPage from "./Entry";
-import NewEntry from "./NewEntry";
+import NewOccupationalHealthCare from "./NewOccupationalCare";
 
 const index = () => {
   const { id } = useParams<{ id: string }>();
   const [patient, setPatient] = React.useState<Patient | undefined>(undefined);
   const [{ patients }, dispatch] = useStateValue();
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const submitNewEntry = async (values: EntryWithoutId) => {
     try {
       // const { data: newEntry } =
@@ -25,10 +26,6 @@ const index = () => {
       console.error(err.response?.data || "Unknown Error");
     }
   };
-
-  // const dummy = (value: EntryWithoutId) => {
-  //   console.log(value);
-  // };
 
   const fetchPatient = async () => {
     try {
@@ -72,8 +69,7 @@ const index = () => {
       {patient?.entries.map((entry) => (
         <EntryPage entry={entry} key={entry.id} />
       ))}
-
-      <NewEntry onSubmit={submitNewEntry} />
+      <NewOccupationalHealthCare onSubmit={submitNewEntry} />
     </div>
   );
 };

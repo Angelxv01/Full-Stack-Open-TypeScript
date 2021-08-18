@@ -1,11 +1,7 @@
 import React from "react";
 import { Formik, Form, Field } from "formik";
-import { HealthCheckEntry } from "../types";
-import {
-  TextField,
-  DiagnosisSelection,
-  NumberField
-} from "../AddPatientModal/FormField";
+import { OccupationalHealthcareEntry } from "../types";
+import { TextField, DiagnosisSelection } from "../AddPatientModal/FormField";
 import { useStateValue } from "../state";
 import { Button } from "semantic-ui-react";
 
@@ -13,10 +9,10 @@ interface BaseProps {
   onCancel?: () => void;
 }
 interface HCProps extends BaseProps {
-  onSubmit: (values: Omit<HealthCheckEntry, "id">) => void;
+  onSubmit: (values: Omit<OccupationalHealthcareEntry, "id">) => void;
 }
 
-const NewEntry = ({ onSubmit }: HCProps) => {
+const Entry = ({ onSubmit }: HCProps) => {
   const [{ diagnosis }] = useStateValue();
   return (
     <Formik
@@ -25,14 +21,18 @@ const NewEntry = ({ onSubmit }: HCProps) => {
         date: "",
         specialist: "",
         diagnosisCodes: [],
-        healthCheckRating: 0,
-        type: "HealthCheck"
+        type: "OccupationalHealthcare",
+        employerName: "",
+        sickLeave: {
+          startDate: "",
+          endDate: ""
+        }
       }}
       onSubmit={onSubmit}
       validate={(values) => {
         const requiredError = "Field is required";
         const errors: {
-          [field: string]: string | { [field: string]: string };
+          [field: string]: { [nested: string]: string } | string;
         } = {};
 
         if (!values.description) {
@@ -44,10 +44,18 @@ const NewEntry = ({ onSubmit }: HCProps) => {
         if (!values.specialist) {
           errors.specialist = requiredError;
         }
-        if (values.healthCheckRating > 3 || values.healthCheckRating < 0) {
-          errors.healthCheckRating = "Field is invalid";
+        if (!values.employerName) {
+          errors.employerName = requiredError;
         }
-
+        if (
+          Boolean(values.sickLeave?.startDate) !==
+          Boolean(values.sickLeave?.endDate)
+        ) {
+          errors.sickLeave = {
+            startDate: requiredError,
+            endDate: requiredError
+          };
+        }
         return errors;
       }}
     >
@@ -79,11 +87,23 @@ const NewEntry = ({ onSubmit }: HCProps) => {
               component={DiagnosisSelection}
             />
             <Field
-              name="healthCheckRating"
-              label="Health Check Rating"
-              min={0}
-              max={3}
-              component={NumberField}
+              name="employerName"
+              label="Employer Name"
+              placeholder="Employer Name"
+              component={TextField}
+            />
+            <h3>Sick Leave</h3>
+            <Field
+              name="sickLeave.startDate"
+              label="Start Date"
+              placeholder="YYYY-MM-DD"
+              component={TextField}
+            />
+            <Field
+              name="sickLeave.endDate"
+              label="End Date"
+              placeholder="YYYY-MM-DD"
+              component={TextField}
             />
             <Button
               type="submit"
@@ -100,4 +120,4 @@ const NewEntry = ({ onSubmit }: HCProps) => {
   );
 };
 
-export default NewEntry;
+export default Entry;
