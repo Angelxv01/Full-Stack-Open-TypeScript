@@ -20,13 +20,15 @@ export interface Patient {
   entries: Entry[];
 }
 
-interface BaseEntry {
+export interface BaseEntry {
   id: string;
   description: string;
   date: string;
   specialist: string;
   diagnosisCodes?: Array<Diagnosis["code"]>;
 }
+
+export type FormBaseEntry = Omit<BaseEntry, "id">;
 
 interface HospitalEntry extends BaseEntry {
   type: "Hospital";

@@ -2,34 +2,49 @@ import React from "react";
 import axios from "axios";
 import { useParams } from "react-router-dom";
 import { Header, Icon, Container } from "semantic-ui-react";
-import { Gender, Patient } from "../types";
+import { Entry, FormBaseEntry, Gender, Patient } from "../types";
 
-import { patientInfo, useStateValue } from "../state";
-import Entry from "./Entry";
+import { patientInfo, useStateValue, addEntry } from "../state";
+import { apiBaseUrl } from "../constants";
+import EntryPage from "./Entry";
+import NewEntry from "./NewEntry";
 
 const index = () => {
   const { id } = useParams<{ id: string }>();
   const [patient, setPatient] = React.useState<Patient | undefined>(undefined);
   const [{ patients }, dispatch] = useStateValue();
 
-  React.useEffect(() => {
-    const fetchPatient = async () => {
-      const fetched = patients[id]?.ssn;
-      if (fetched) {
-        return setPatient(patients[id]);
-      }
+  const submitNewEntry = async (values: FormBaseEntry) => {
+    try {
+      const { data: newEntry } = await axios.post<Entry>(
+        `${apiBaseUrl}/patients/${id}/entries`,
+        { ...values, healthCheckRating: 1, type: "HealthCheck" }
+      );
+      dispatch(addEntry(id, newEntry));
+      void fetchPatient();
+    } catch (err) {
+      console.error(err.response?.data || "Unknown Error");
+    }
+  };
 
-      try {
-        const { data: patientFromApi } = await axios.get<Patient>(
-          `http://localhost:3001/api/patients/${id}`
-        );
-        dispatch(patientInfo(patientFromApi));
-        return setPatient(patientFromApi);
-      } catch (e) {
-        console.error(e);
-        return;
-      }
-    };
+  const fetchPatient = async () => {
+    try {
+      const { data: patientFromApi } = await axios.get<Patient>(
+        `http://localhost:3001/api/patients/${id}`
+      );
+      dispatch(patientInfo(patientFromApi));
+      return setPatient(patientFromApi);
+    } catch (e) {
+      console.error(e);
+      return;
+    }
+  };
+
+  React.useEffect(() => {
+    const fetched = patients[id]?.ssn;
+    if (fetched) {
+      return setPatient(patients[id]);
+    }
     void fetchPatient();
   }, [id]);
 
@@ -52,8 +67,10 @@ const index = () => {
       <Container>occupation: {patient?.occupation}</Container>
       <Header as="h3">entries</Header>
       {patient?.entries.map((entry) => (
-        <Entry entry={entry} key={entry.id} />
+        <EntryPage entry={entry} key={entry.id} />
       ))}
+
+      <NewEntry onSubmit={submitNewEntry} />
     </div>
   );
 };
