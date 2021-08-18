@@ -9,14 +9,12 @@ import {
 import { useStateValue } from "../state";
 import { Button } from "semantic-ui-react";
 
-interface BaseProps {
-  onCancel?: () => void;
-}
-interface HCProps extends BaseProps {
-  onSubmit: (values: Omit<HealthCheckEntry, "id">) => void;
+type EntryType = Omit<HealthCheckEntry, "id">;
+interface Props {
+  onSubmit: (values: EntryType) => void;
 }
 
-const Entry = ({ onSubmit }: HCProps) => {
+const Entry = ({ onSubmit }: Props) => {
   const [{ diagnosis }] = useStateValue();
   return (
     <Formik
@@ -28,7 +26,11 @@ const Entry = ({ onSubmit }: HCProps) => {
         healthCheckRating: 0,
         type: "HealthCheck"
       }}
-      onSubmit={onSubmit}
+      onSubmit={(values, actions) => {
+        onSubmit(values as EntryType);
+        actions.setSubmitting(false);
+        actions.resetForm();
+      }}
       validate={(values) => {
         const requiredError = "Field is required";
         const errors: {

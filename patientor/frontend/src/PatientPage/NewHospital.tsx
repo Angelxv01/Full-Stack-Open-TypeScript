@@ -5,14 +5,12 @@ import { TextField, DiagnosisSelection } from "../AddPatientModal/FormField";
 import { useStateValue } from "../state";
 import { Button } from "semantic-ui-react";
 
-interface BaseProps {
-  onCancel?: () => void;
-}
-interface HCProps extends BaseProps {
-  onSubmit: (values: Omit<HospitalEntry, "id">) => void;
+type EntryType = Omit<HospitalEntry, "id">;
+interface Props {
+  onSubmit: (values: EntryType) => void;
 }
 
-const Entry = ({ onSubmit }: HCProps) => {
+const Entry = ({ onSubmit }: Props) => {
   const [{ diagnosis }] = useStateValue();
   return (
     <Formik
@@ -27,7 +25,11 @@ const Entry = ({ onSubmit }: HCProps) => {
           criteria: ""
         }
       }}
-      onSubmit={onSubmit}
+      onSubmit={(values, actions) => {
+        onSubmit(values as EntryType);
+        actions.setSubmitting(false);
+        actions.resetForm();
+      }}
       validate={(values) => {
         const requiredError = "Field is required";
         const errors: {
