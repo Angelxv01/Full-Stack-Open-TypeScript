@@ -1,6 +1,6 @@
 import React from "react";
 import { Formik, Form, Field } from "formik";
-import { EntryWithoutId } from "../types";
+import { HealthCheckEntry } from "../types";
 import {
   TextField,
   DiagnosisSelection,
@@ -9,12 +9,14 @@ import {
 import { useStateValue } from "../state";
 import { Button } from "semantic-ui-react";
 
-interface Props {
-  onSubmit: (values: EntryWithoutId) => void;
-  // onCancel: () => void;
+interface BaseProps {
+  onCancel?: () => void;
+}
+interface HCProps extends BaseProps {
+  onSubmit: (values: Omit<HealthCheckEntry, "id">) => void;
 }
 
-const NewEntry = ({ onSubmit }: Props) => {
+const NewEntry = ({ onSubmit }: HCProps) => {
   const [{ diagnosis }] = useStateValue();
   return (
     <Formik
@@ -27,6 +29,27 @@ const NewEntry = ({ onSubmit }: Props) => {
         type: "HealthCheck"
       }}
       onSubmit={onSubmit}
+      validate={(values) => {
+        const requiredError = "Field is required";
+        const errors: {
+          [field: string]: string | { [field: string]: string };
+        } = {};
+
+        if (!values.description) {
+          errors.description = requiredError;
+        }
+        if (!values.date) {
+          errors.date = requiredError;
+        }
+        if (!values.specialist) {
+          errors.specialist = requiredError;
+        }
+        if (values.healthCheckRating > 3 || values.healthCheckRating < 0) {
+          errors.healthCheckRating = "Field is invalid";
+        }
+
+        return errors;
+      }}
     >
       {({ isValid, dirty, setFieldValue, setFieldTouched }) => {
         return (
