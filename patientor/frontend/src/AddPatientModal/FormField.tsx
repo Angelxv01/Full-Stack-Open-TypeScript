@@ -97,6 +97,7 @@ export const DiagnosisSelection = ({
         multiple
         search
         selection
+        clearable
         options={stateOptions}
         onChange={onChange}
       />
