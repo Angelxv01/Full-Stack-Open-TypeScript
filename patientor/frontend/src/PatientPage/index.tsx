@@ -1,19 +1,34 @@
 import React from "react";
 import axios from "axios";
 import { useParams } from "react-router-dom";
-import { Header, Icon, Container } from "semantic-ui-react";
+import { Header, Icon, Container, Button } from "semantic-ui-react";
+
 import { Entry, EntryWithoutId, Gender, Patient } from "../types";
-// Entry
 import { patientInfo, useStateValue } from "../state";
-// addEntry,
 import { apiBaseUrl } from "../constants";
+
 import EntryPage from "./Entry";
 import NewHospital from "./NewHospital";
+import NewHealthCheck from "./NewHealthCheck";
+import NewOccupationalCare from "./NewOccupationalCare";
+
+const types: Array<Entry["type"]> = [
+  "HealthCheck",
+  "Hospital",
+  "OccupationalHealthcare"
+];
+
+const assertNever = (value: never): never => {
+  throw new Error(
+    `Unhandled discriminated union member: ${JSON.stringify(value)}`
+  );
+};
 
 const index = () => {
   const { id } = useParams<{ id: string }>();
   const [patient, setPatient] = React.useState<Patient | undefined>(undefined);
   const [{ patients }, dispatch] = useStateValue();
+  const [type, setType] = React.useState<Entry["type"]>(types[0]);
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const submitNewEntry = async (values: EntryWithoutId) => {
@@ -55,6 +70,20 @@ const index = () => {
       : patient?.gender === Gender.Male
       ? "mars"
       : "venus";
+
+  const form = () => {
+    switch (type) {
+      case "HealthCheck":
+        return <NewHealthCheck onSubmit={submitNewEntry} />;
+      case "Hospital":
+        return <NewHospital onSubmit={submitNewEntry} />;
+      case "OccupationalHealthcare":
+        return <NewOccupationalCare onSubmit={submitNewEntry} />;
+      default:
+        assertNever(type);
+    }
+  };
+
   return (
     <div className="App">
       <Header as="h1">
@@ -69,7 +98,12 @@ const index = () => {
       {patient?.entries.map((entry) => (
         <EntryPage entry={entry} key={entry.id} />
       ))}
-      <NewHospital onSubmit={submitNewEntry} />
+      {types.map((obj) => (
+        <Button key={obj} onClick={() => setType(obj)}>
+          {obj}
+        </Button>
+      ))}
+      {form()}
     </div>
   );
 };
