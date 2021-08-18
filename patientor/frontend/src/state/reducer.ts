@@ -61,16 +61,14 @@ export const reducer = (state: State, action: Action): State => {
         }
       };
     case "ADD_ENTRY": {
+      const { id, entry } = action.payload;
       return {
         ...state,
         patients: {
           ...state.patients,
-          [action.payload.id]: {
-            ...state.patients[action.payload.id],
-            entries: {
-              ...state.patients[action.payload.id].entries,
-              ...action.payload.entry
-            }
+          [id]: {
+            ...state.patients[id],
+            entries: [...state.patients[id].entries, entry]
           }
         }
       };

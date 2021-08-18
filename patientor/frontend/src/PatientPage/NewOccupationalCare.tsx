@@ -80,11 +80,11 @@ const Entry = ({ onSubmit }: HCProps) => {
               placeholder="Specialist Name"
               component={TextField}
             />
-            <Field
-              diagnoses={diagnosis}
-              setFieldTouched={setFieldTouched}
+            <DiagnosisSelection
               setFieldValue={setFieldValue}
-              component={DiagnosisSelection}
+              setFieldTouched={setFieldTouched}
+              diagnoses={Object.values(diagnosis)}
+              type="OccupationalHealthcare"
             />
             <Field
               name="employerName"

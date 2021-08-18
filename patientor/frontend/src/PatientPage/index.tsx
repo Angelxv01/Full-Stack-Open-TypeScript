@@ -4,10 +4,10 @@ import { useParams } from "react-router-dom";
 import { Header, Icon, Container, Button } from "semantic-ui-react";
 
 import { Entry, EntryWithoutId, Gender, Patient } from "../types";
-import { patientInfo, useStateValue } from "../state";
+import { addEntry, patientInfo, useStateValue } from "../state";
 import { apiBaseUrl } from "../constants";
 
-import EntryPage from "./Entry";
+import EntrySection from "./Entry";
 import NewHospital from "./NewHospital";
 import NewHealthCheck from "./NewHealthCheck";
 import NewOccupationalCare from "./NewOccupationalCare";
@@ -30,13 +30,13 @@ const index = () => {
   const [{ patients }, dispatch] = useStateValue();
   const [type, setType] = React.useState<Entry["type"]>(types[0]);
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const submitNewEntry = async (values: EntryWithoutId) => {
     try {
-      // const { data: newEntry } =
-      await axios.post<Entry>(`${apiBaseUrl}/patients/${id}/entries`, values);
-      // dispatch(addEntry(id, newEntry));
-      void fetchPatient();
+      const { data: newEntry } = await axios.post<Entry>(
+        `${apiBaseUrl}/patients/${id}/entries`,
+        values
+      );
+      dispatch(addEntry(id, newEntry));
     } catch (err) {
       console.error(err.response?.data || "Unknown Error");
     }
@@ -96,11 +96,11 @@ const index = () => {
       <Container>occupation: {patient?.occupation}</Container>
       <Header as="h3">entries</Header>
       {patient?.entries.map((entry) => (
-        <EntryPage entry={entry} key={entry.id} />
+        <EntrySection entry={entry} key={entry.id} />
       ))}
-      {types.map((obj) => (
-        <Button key={obj} onClick={() => setType(obj)}>
-          {obj}
+      {types.map((type) => (
+        <Button key={type} onClick={() => setType(type)}>
+          {type}
         </Button>
       ))}
       {form()}
