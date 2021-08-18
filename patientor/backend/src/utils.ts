@@ -37,7 +37,7 @@ const parseGender = (object: unknown): Gender => {
 };
 
 const parseHealthCheckRating = (object: unknown): HealthCheckRating => {
-  if (!object || !isHealthCheckRating(object)) {
+  if (!isNumber(object) || !isHealthCheckRating(object)) {
     throw new Error("Invalid health check rating " + object);
   }
 
@@ -54,6 +54,10 @@ const parseType = (object: unknown): Entry["type"] => {
 
 const isString = (object: unknown): object is string => {
   return typeof object === "string" || object instanceof String;
+};
+
+const isNumber = (object: unknown): object is number => {
+  return typeof object === "number";
 };
 
 const isDate = (object: string): boolean => {
@@ -86,7 +90,7 @@ const parseDiagnoses = (object: unknown): Array<Diagnose["code"]> => {
   return object as Array<Diagnose["code"]>;
 };
 
-const isHealthCheckRating = (object: any): object is HealthCheckRating => {
+const isHealthCheckRating = (object: number): object is HealthCheckRating => {
   return Object.values(HealthCheckRating).includes(object);
 };
 
