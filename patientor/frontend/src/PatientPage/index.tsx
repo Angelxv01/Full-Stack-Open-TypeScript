@@ -2,9 +2,10 @@ import React from "react";
 import axios from "axios";
 import { useParams } from "react-router-dom";
 import { Header, Icon, Container } from "semantic-ui-react";
-import { Entry, FormBaseEntry, Gender, Patient } from "../types";
-
-import { patientInfo, useStateValue, addEntry } from "../state";
+import { Entry, EntryWithoutId, Gender, Patient } from "../types";
+// Entry
+import { patientInfo, useStateValue } from "../state";
+// addEntry,
 import { apiBaseUrl } from "../constants";
 import EntryPage from "./Entry";
 import NewEntry from "./NewEntry";
@@ -14,18 +15,20 @@ const index = () => {
   const [patient, setPatient] = React.useState<Patient | undefined>(undefined);
   const [{ patients }, dispatch] = useStateValue();
 
-  const submitNewEntry = async (values: FormBaseEntry) => {
+  const submitNewEntry = async (values: EntryWithoutId) => {
     try {
-      const { data: newEntry } = await axios.post<Entry>(
-        `${apiBaseUrl}/patients/${id}/entries`,
-        { ...values, healthCheckRating: 1, type: "HealthCheck" }
-      );
-      dispatch(addEntry(id, newEntry));
+      // const { data: newEntry } =
+      await axios.post<Entry>(`${apiBaseUrl}/patients/${id}/entries`, values);
+      // dispatch(addEntry(id, newEntry));
       void fetchPatient();
     } catch (err) {
       console.error(err.response?.data || "Unknown Error");
     }
   };
+
+  // const dummy = (value: EntryWithoutId) => {
+  //   console.log(value);
+  // };
 
   const fetchPatient = async () => {
     try {

@@ -1,12 +1,16 @@
 import React from "react";
 import { Formik, Form, Field } from "formik";
-import { FormBaseEntry } from "../types";
-import { TextField, DiagnosisSelection } from "../AddPatientModal/FormField";
+import { EntryWithoutId } from "../types";
+import {
+  TextField,
+  DiagnosisSelection,
+  NumberField
+} from "../AddPatientModal/FormField";
 import { useStateValue } from "../state";
 import { Button } from "semantic-ui-react";
 
 interface Props {
-  onSubmit: (values: FormBaseEntry) => void;
+  onSubmit: (values: EntryWithoutId) => void;
   // onCancel: () => void;
 }
 
@@ -18,7 +22,9 @@ const NewEntry = ({ onSubmit }: Props) => {
         description: "",
         date: "",
         specialist: "",
-        diagnosisCodes: []
+        diagnosisCodes: [],
+        healthCheckRating: 0,
+        type: "HealthCheck"
       }}
       onSubmit={onSubmit}
     >
@@ -43,10 +49,18 @@ const NewEntry = ({ onSubmit }: Props) => {
               placeholder="Specialist Name"
               component={TextField}
             />
-            <DiagnosisSelection
+            <Field
               diagnoses={diagnosis}
               setFieldTouched={setFieldTouched}
               setFieldValue={setFieldValue}
+              component={DiagnosisSelection}
+            />
+            <Field
+              name="healthCheckRating"
+              label="Health Check Rating"
+              min={0}
+              max={3}
+              component={NumberField}
             />
             <Button
               type="submit"
