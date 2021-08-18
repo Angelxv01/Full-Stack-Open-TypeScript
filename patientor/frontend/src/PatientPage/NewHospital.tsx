@@ -81,7 +81,6 @@ const Entry = ({ onSubmit }: HCProps) => {
             <DiagnosisSelection
               setFieldValue={setFieldValue}
               setFieldTouched={setFieldTouched}
-              type="Hospital"
               diagnoses={Object.values(diagnosis)}
             />
             <h2>Discharge</h2>

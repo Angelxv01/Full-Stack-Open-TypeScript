@@ -26,7 +26,7 @@ const assertNever = (value: never): never => {
 
 const index = () => {
   const { id } = useParams<{ id: string }>();
-  const [patient, setPatient] = React.useState<Patient | undefined>(undefined);
+  // const [patient, setPatient] = React.useState<Patient | undefined>(undefined);
   const [{ patients }, dispatch] = useStateValue();
   const [type, setType] = React.useState<Entry["type"]>(types[0]);
 
@@ -42,32 +42,30 @@ const index = () => {
     }
   };
 
-  const fetchPatient = async () => {
-    try {
-      const { data: patientFromApi } = await axios.get<Patient>(
-        `http://localhost:3001/api/patients/${id}`
-      );
-      dispatch(patientInfo(patientFromApi));
-      return setPatient(patientFromApi);
-    } catch (e) {
-      console.error(e);
-      return;
-    }
-  };
-
   React.useEffect(() => {
     const fetched = patients[id]?.ssn;
     if (fetched) {
-      return setPatient(patients[id]);
+      return;
     }
+
+    const fetchPatient = async () => {
+      try {
+        const { data: patientFromApi } = await axios.get<Patient>(
+          `http://localhost:3001/api/patients/${id}`
+        );
+        dispatch(patientInfo(patientFromApi));
+      } catch (e) {
+        console.error(e);
+      }
+    };
     void fetchPatient();
   }, [id]);
 
   // gender icon style
   const genderName =
-    patient?.gender === Gender.Other
+    patients[id]?.gender === Gender.Other
       ? "genderless"
-      : patient?.gender === Gender.Male
+      : patients[id]?.gender === Gender.Male
       ? "mars"
       : "venus";
 
@@ -88,14 +86,14 @@ const index = () => {
     <div className="App">
       <Header as="h1">
         <Container>
-          {patient?.name}
+          {patients[id]?.name}
           <Icon name={genderName} />
         </Container>
       </Header>
-      <Container>ssn: {patient?.ssn}</Container>
-      <Container>occupation: {patient?.occupation}</Container>
+      <Container>ssn: {patients[id]?.ssn}</Container>
+      <Container>occupation: {patients[id]?.occupation}</Container>
       <Header as="h3">entries</Header>
-      {patient?.entries.map((entry) => (
+      {patients[id]?.entries.map((entry) => (
         <EntrySection entry={entry} key={entry.id} />
       ))}
       {types.map((type) => (

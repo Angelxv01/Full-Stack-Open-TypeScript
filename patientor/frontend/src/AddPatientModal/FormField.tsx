@@ -68,13 +68,11 @@ export const NumberField = ({ field, label, min, max }: NumberProps) => (
 export const DiagnosisSelection = ({
   diagnoses,
   setFieldValue,
-  setFieldTouched,
-  type
+  setFieldTouched
 }: {
   diagnoses: Diagnosis[];
   setFieldValue: FormikProps<{ diagnosisCodes: string[] }>["setFieldValue"];
   setFieldTouched: FormikProps<{ diagnosisCodes: string[] }>["setFieldTouched"];
-  type: string;
 }) => {
   const field = "diagnosisCodes";
   const onChange = (
@@ -86,7 +84,7 @@ export const DiagnosisSelection = ({
   };
 
   const stateOptions = diagnoses.map((diagnosis) => ({
-    key: type + diagnosis.code,
+    key: diagnosis.code,
     text: `${diagnosis.name} (${diagnosis.code})`,
     value: diagnosis.code
   }));

@@ -84,7 +84,6 @@ const Entry = ({ onSubmit }: HCProps) => {
               setFieldValue={setFieldValue}
               setFieldTouched={setFieldTouched}
               diagnoses={Object.values(diagnosis)}
-              type="OccupationalHealthcare"
             />
             <Field
               name="employerName"
