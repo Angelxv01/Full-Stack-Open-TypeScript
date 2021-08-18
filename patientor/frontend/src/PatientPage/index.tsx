@@ -8,7 +8,7 @@ import { patientInfo, useStateValue } from "../state";
 // addEntry,
 import { apiBaseUrl } from "../constants";
 import EntryPage from "./Entry";
-import NewOccupationalHealthCare from "./NewOccupationalCare";
+import NewHospital from "./NewHospital";
 
 const index = () => {
   const { id } = useParams<{ id: string }>();
@@ -69,7 +69,7 @@ const index = () => {
       {patient?.entries.map((entry) => (
         <EntryPage entry={entry} key={entry.id} />
       ))}
-      <NewOccupationalHealthCare onSubmit={submitNewEntry} />
+      <NewHospital onSubmit={submitNewEntry} />
     </div>
   );
 };
